@@ -707,3 +707,24 @@ export class Fish extends Animal {
 ```
 
 ## Miembros Estáticos
+
+Son métodos y propiedades que residen en la clase. Por lo que no es necesario hacer una instancia para poder utilizarlos o ejecutarlos. Un ejemplo sencillo de una clase que tiene miembros estáticos es Math, con Math podemos obtener sus miembros estáticos sin la necesidad de crear una instancia de la misma.
+
+```
+console.log( Math.PI ); //output : 3.1415...
+console.log( Math.max(1,56,9,8,6,3,3,1,2,4) ) //output 56
+```
+
+Para tener miembros estáticos, solamente debemos agregar static antes de la definición de un miembro, de esa forma tenemos de manera automática un miembro estático. Creemos una clase que sea como Math pero, codeado con nosotros.
+
+#### Ejemplo:
+```
+export class CustomMath{
+  static PI : number = 3.1416;
+
+  static max(...numbers : number[]) : number{
+    const output = numbers.reduce( (prev, curr) => prev < curr ? curr : prev )
+    return output;
+  }
+}
+```

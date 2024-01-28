@@ -1,7 +1,3 @@
-import { Fish, Animal } from "./herencia";
+import { CustomMath } from "./static";
 
-const fish = new Fish( 'Pez globo' );
-const animal = new Animal('Humano');
-
-console.log(`The animal ${fish.name} is ${fish.move()}`);
-console.log(`The animal ${animal.name} is ${animal.move()}`);
+console.log( CustomMath.max( 1,56,9,8,6,3,3,1,2,4 ) );
