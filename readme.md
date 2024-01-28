@@ -525,7 +525,7 @@ export class SimpleDate {
 }
 
 ```
-Se recomienda que cuando tengamos atributos privados, coloquemos un **_** antes del nombre del atributo, así podríamos hacer uso del nombre y hacer mucho más amigable la clase para aquellos que la vayan a utilizar. Los getters no solamente podemos utilizarlos para retornar exclusivamente el atributo, también podemos extender el uso de un getter, agregando lógica que modifique el resultado de alguna propiedad. Un getter que podríamos agregar es saber si el año es viciesto o no.
+Se recomienda que cuando tengamos atributos privados, coloquemos un **_** antes del nombre del atributo, así podríamos hacer uso del nombre y hacer mucho más amigable la clase para aquellos que la vayan a utilizar. Los getters no solamente podemos utilizarlos para retornar exclusivamente el atributo, también podemos extender el uso de un getter, agregando lógica que modifique el resultado de alguna propiedad. Un getter que podríamos agregar es saber si el año es biciesto o no.
 #### Ejemplo:
 ```
 //private.ts
@@ -555,6 +555,39 @@ export class SimpleDate {
 
 ```
 **nota:** Todos lo getter *deben retornar* algo, ya sea que si retornarmos un atributo privado o extendemos la definición de un atributo. Puedes ver un ejemplo sencillo de métodos getter en el archivo de ***getters.ts***
+
+#### Setter
+Nos permite tener reglas de modificación para nuestros atributos, ya sea una asignación directa o realiar operaciones antes de hacer una asignación a alguna propiedad
+
+#### Ejemplo
+```
+//setter.ts
+export class Movie {
+  constructor(
+    private _name : string,
+    private _createdAt : Date = new Date(),
+    private _genre : string,
+    private _price : number,
+  ){}
+
+  get name() { return this._name; }
+  get genre(){ return this._genre; }
+  get price(){ return this._price; }
+  get createdAt(){ return this._createdAt; }
+
+  set name( name : string ) { this._name = name; }
+  set genre( genre : string ){ this._genre = genre; }
+  set price( price : number ){
+    if(price > 0)
+      this._price = price;
+    else
+      throw new Error('The price of a movie must not be negative or cero');
+   }
+}
+
+```
+
+La clase anterior asignar el nombre, el género y el precio. En cuanto al precio podemos ver que se  ha agregado una pequeña validación para tener precios positivos mayores a cero.
 
 ### Protected
 Este nivel de acceso es parecido a **private** pero, con la gran diferencia que los métodos y/o atributos que tengan **protected** su nivel de acceso será dentro de la misma clase y para todas aquellas clases que hereden de la misma (es decir, clases hijas).
@@ -633,3 +666,6 @@ export class Enemy extends Character {
 
 ```
 No es necesario entender **herencia** justo ahora, pues se hablará de ella más adelante.
+
+## Herencia
+Permite crear clases que reutilizan, extienden y modifican el comportamiento definido en otras clases. Las clase cuyo miembro se heredan se denomina clase *clase base* o *clase padre* y la clase que hereda de esos miembros se le llama *clase derivada* o *clase hija*
