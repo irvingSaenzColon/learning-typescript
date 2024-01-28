@@ -668,4 +668,42 @@ export class Enemy extends Character {
 No es necesario entender **herencia** justo ahora, pues se hablará de ella más adelante.
 
 ## Herencia
-Permite crear clases que reutilizan, extienden y modifican el comportamiento definido en otras clases. Las clase cuyo miembro se heredan se denomina clase *clase base* o *clase padre* y la clase que hereda de esos miembros se le llama *clase derivada* o *clase hija*
+Permite crear clases que reutilizan, extienden y modifican el comportamiento definido en otras clases. Las clase cuyo miembro se heredan se denomina clase *clase base* o *clase padre* y la clase que hereda de esos miembros se le llama *clase derivada* o *clase hija*. Para poder heredar de una clase a otra se usa la palabra reservada **extends**.
+
+Cuando se hereda, es necesario ejecutar el constructor padre. Es importante pasarle los parametros del constructor padre através del constructor hijo.
+
+#### Ejemplo:
+```
+export class Animal {
+  constructor(
+    protected _name : string
+   ){}
+
+   public move() : string {
+    return 'walking...';
+   }
+
+   public sound() : string {
+    return 'speak...';
+   }
+
+   get name() { return this._name; }
+}
+
+export class Fish extends Animal {
+  constructor( name : string){
+    super( name );
+  }
+
+  public override move() : string{
+    return 'swimming...'
+  }
+
+  public override sound() : string{
+    return 'Glu glu';
+   }
+}
+
+```
+
+## Miembros Estáticos
