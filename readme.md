@@ -728,3 +728,6 @@ export class CustomMath{
   }
 }
 ```
+
+## Interfaces
+Una inteface es un contrato que indica qué métodos y/o atributos debe obligatoriamente implementar una clase. Los métodos definidos en una interface deben ser públicos
