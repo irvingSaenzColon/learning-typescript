@@ -1,3 +1,8 @@
-import { CustomMath } from "./static";
+import { CustomService } from "./singleton";
 
-console.log( CustomMath.max( 1,56,9,8,6,3,3,1,2,4 ) );
+const service1 = CustomService.create();
+const service2 = CustomService.create();
+const service3 = CustomService.create();
+
+console.log('comparando los servicios 1 y 2: ', service1 === service2);
+console.log('comparando los servicios 1 y 3: ', service1 === service3);

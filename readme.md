@@ -730,4 +730,92 @@ export class CustomMath{
 ```
 
 ## Interfaces
-Una inteface es un contrato que indica qué métodos y/o atributos debe obligatoriamente implementar una clase. Los métodos definidos en una interface deben ser públicos
+Una inteface es un contrato que indica qué métodos y/o atributos debe obligatoriamente implementar una clase. Los métodos definidos en una interface deben ser públicos.
+
+#### Ejemplo:
+```
+export interface DatabaseDriver {
+  database : string;
+  password : string;
+  port : number;
+
+  connect() : boolean;
+  close() : void;
+  isConnected() : boolean;
+}
+
+export class PostgressDriver implements DatabaseDriver {
+
+  constructor(
+    public database : string,
+    public password : string,
+    public port : number
+  ){}
+
+  connect(): boolean {
+    return true;
+  }
+
+  close(): void {
+    
+  }
+
+  isConnected(): boolean {
+    return true;
+  }
+}
+```
+**nota:** recuerda qu se deben implementar todas las métodos y los atributos de un a interface, respentando siempre su tipado. Todos los miembros de una interface son públicos, no se le puede establecer un nivel de acces. Si requerimos niveles de acceso, es preferieble utilizar clases.
+
+Una interface puede implementar otras interfaces
+
+## Clases Abstractas
+Las clases abstractas son aquellas que son usadas para poder crear otras clases, es decir, están destinadas a ser clases padres, por sí mismas no representan algo específico. Esas cualidades hacen que una clase abstracta no pueda ser instanciada, puede contener  métodos abstractos, los métodos abstractos deben ser sobreescritos por las clases que heredan de la misma.
+
+
+
+#### Ejemplo:
+
+## Diferencias entre clase abstracta e interface.
+Si vemos las clases abstractas y las interfaces, podemos notar que tiene muchas similitudes, esto hace que en ocasiones sea confuso a la hora de quererlos distinguir.
+
+* Las clases abstractas pueden heredar de otras clases abstractas o clases concretas (solamente puede heredar de una clase indpendientemente del tipo). Las interfaces pueden implementar multiples interfaces pero, no extender de clases.
+* Las clases abstractas pueden tener métodos abstractos y métodos concretos, las interfaces solamente pueden tener métodos abstractos.
+* Una interface define los métodos y atributos que tendrá aquella cosa que lo implemente. Una clase abstracta contiene algunas definiciones básicas para empezar a desarrollar otras clases que requieran de características similares.
+
+
+## Constructor Privado: Patrón Singleton
+Primero hay que definir qué es un singleton
+
+> Es un patrón de diseño creacional que nos permite asegurarnos de que una clase tenga una única instancia, a la vez que proporciona un punto de acceso global a dicha instancia.
+
+#### Ejemplo: 
+```
+//singleton.ts
+export class CustomService {
+    static instance  : CustomService | null = null;
+    private constructor(){}
+
+    static create() : CustomService {
+        if(CustomService.instance === null)
+            CustomService.instance = new CustomService();
+
+        return CustomService.instance;
+    }
+
+}
+```
+Primero definimos una clase sin embargo, está es diferente con las que hemos trabajado porque contiene un constructor privado y un atrubuto del tipo de sí mismo, esto por sí sólo es curiosos. Al ser privado el constructor, recordemos que solamente puede ser accedido por la misma clase por lo que no podremos acceder a él al quererlo instanciar, para ello, haremos uso de un método estático, también recordemos que los miembros estáticos se comparten entre todas las clases, es decir, que si tengo una variable llamada nombre y le asigno "Luna", eso significa que sin importar la cantidad de instancias que tenga, si se manada a llamar, siempre será "Luna" a no ser que se le cambie su valor. En el caso del ejemplo lo que hacemos es que tenemos un atributo que puede almacenar una única estancia de la clase.
+
+```
+import { CustomService } from "./singleton";
+
+const service1 = CustomService.create();
+const service2 = CustomService.create();
+const service3 = CustomService.create();
+
+console.log('comparando los servicios 1 y 2: ', service1 === service2);
+console.log('comparando los servicios 1 y 3: ', service1 === service3);
+```
+
+Lo único que hacemos aquí es instanciar 3 objetos, a primera impresión parece como si todas hicieran referencia a algo diferente, sin embargo hacen referencia a los mismo ya que comparten la misma dirección de memoria.
