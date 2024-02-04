@@ -819,3 +819,113 @@ console.log('comparando los servicios 1 y 3: ', service1 === service3);
 ```
 
 Lo único que hacemos aquí es instanciar 3 objetos, a primera impresión parece como si todas hicieran referencia a algo diferente, sin embargo hacen referencia a los mismo ya que comparten la misma dirección de memoria.
+
+## Asincronismo
+
+### Promesas
+Una promesa la podemos ver como una acción que se va a realizar en algún momento pero, no sabemos cuándo sucederá. En programación podemos realizar muchas tareas o ejecuciones de tareas que pueden tomar un tiempo "indefinido". Para ello podemos utilizar promesas que nos permiten saber en qué momento esto se pudo hacer o no pudo realizarse.
+
+
+#### Ejemplo
+
+```
+(async () => {
+  function regularPromise(  ){
+    return new Promise< boolean >( (resolve, reject) => {
+      resolve( true )
+    } );
+  }
+})();
+```
+
+La manera de definir la promesa es sencilla, La promesa consta de una función de una función que recibe como parametros de "resolve", "reject" y debemos de ejecutar una funcion u otra dependiendo de si realiza lo que necesitamos o no.
+Veamos código ligeramente "complicado"
+
+```
+( async () => {
+  function delay( time : number ){
+    const promise = new Promise< boolean >( (resolve ) => {
+
+      setTimeout(() => {
+        resolve( true );
+      }, 500); });
+
+    return promise;
+  }
+
+  const isFinished = await delay( 3000 ); //this function takes 3 seconds
+  console.log( isFinished ? 'It is resolved' : 'it could not resolve the promise' );
+
+})();
+```
+Las promesas también podemos definir el tipado, solamente abrimos el operador de diamante y dentro del mismo definimos el tipo de retorno que tendrá. Siempre es bueno definir el tipo de retorno que realizamos en funciones y más aún si son funciones asíncronas en las que solicitamos recursos en un servidor. 
+Pero ¿Cómo relizamos una petición a un endpoint? Con lo que hemos aprendido podemos de interfaces.
+
+```
+import axios from "axios";
+
+export const API_BASE : string = 'https://api.escuelajs.co/api/v1/products';
+
+(async () => {
+
+  async function getProducts() {
+    const promise = await axios.get( API_BASE );
+
+    return promise;
+  }
+
+  const output = await getProducts();
+
+  console.log( output );
+})();
+
+```
+Para este ejemplo utilizaremos ***axios*** para poder realizar peticiones a un endpoint, en este caso a la fake api de ***platzi***. axios por sí mismo tiene sus métodos y es solamente cuestión de tener la ruta lista. En este caso solicitamos los productos, sin embargo, no sabemos qué contiene o qué tipo de respusta nos dará, el tipo de retorno es Promise< AxiosResponse< any, any>, any >, por lo que no será sencillo poder realizar operaciones usando el analizador de código estático. Para ello usaremos ***interfaces***, para ello veremos la documentación del API para poder realizar la documentación de manera adecuada.
+```
+//product.ts
+import { Category } from "./category"
+
+export interface Product{
+  id : number,
+  title: string,
+  price : number,
+  description : string,
+  category : Category,
+  images : Array<string>
+}
+
+```
+
+```
+//category.ts
+export interface Category {
+  id : number,
+  name : string,
+  image : string
+}
+```
+Teniendo definida una estructura compleja, ahora aplicarlo al tipo de respuesta de la petición.
+```
+import axios from "axios";
+
+export const API_BASE : string = 'https://api.escuelajs.co/api/v1/products';
+
+(async () => {
+
+   async function getProducts() : Promise< Array< Product > > {
+    // const promise = axios.get< Array< Product > >( API_BASE );
+    const promise = await axios.get( API_BASE );
+    const data = promise.data as Array< Product >;
+
+    return data;
+  }
+
+
+  const output = await getProducts();
+
+  console.log( output );
+})();
+
+```
+Ahora podemos utilizar los elementos y métodos de la respuesta del resultado de la respuesta de axios.
+

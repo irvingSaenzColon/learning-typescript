@@ -1,8 +1,14 @@
-import { CustomService } from "./singleton";
+import axios from "axios";
+import { Product } from './app/model/product';
+import { API_BASE } from "./promises";
 
-const service1 = CustomService.create();
-const service2 = CustomService.create();
-const service3 = CustomService.create();
+( async() => {
+  async function getProducts() : Promise< Array< Product > > {
+    const { data }  = await axios.get< Array< Product > >( API_BASE );
 
-console.log('comparando los servicios 1 y 2: ', service1 === service2);
-console.log('comparando los servicios 1 y 3: ', service1 === service3);
+    return data;
+  }
+
+  const prods = await getProducts();
+  console.log( prods );
+} )();
