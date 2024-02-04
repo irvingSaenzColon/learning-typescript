@@ -927,5 +927,6 @@ export const API_BASE : string = 'https://api.escuelajs.co/api/v1/products';
 })();
 
 ```
-Ahora podemos utilizar los elementos y métodos de la respuesta del resultado de la respuesta de axios.
+Ahora podemos utilizar los elementos y métodos de la respuesta del resultado de la respuesta de axios, además podemos implementar las funciones de arreglos ya que el tipo de retorno es un arreglo.
 
+## Generics

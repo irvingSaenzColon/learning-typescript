@@ -1,14 +1,7 @@
-import axios from "axios";
-import { Product } from './app/model/product';
-import { API_BASE } from "./promises";
+import ProductHttpService from "./app/services/productHttp";
+(async () => {
 
-( async() => {
-  async function getProducts() : Promise< Array< Product > > {
-    const { data }  = await axios.get< Array< Product > >( API_BASE );
-
-    return data;
-  }
-
-  const prods = await getProducts();
-  console.log( prods );
-} )();
+  const prodService = new ProductHttpService();
+  const prod = await prodService.find( 178 );
+  console.log( prod );
+})();
